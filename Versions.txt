@@ -1,0 +1,478 @@
+~~ This file has not been spell-checked or grammar checked ~~
+~~ Parts may also be incomplete ~~
+
+Version history of Positions©, A game made by...
+! ! ! S O M ! ! !
+
+Legend
+------
+*Not very important
+**Sorta important
+***Important
+**** !!!!!!!!!
+
+>> Indicates major update.
+------
+
+>> 1.0.0
+***The first compiled version! 
+**'Features' a random AI 
+***sndplaysound to play sound!
+
+>> 2.06
+***Uses <<Direct Sound>> to play all sounds!
+****Made an AI that actually SHOOTS BACK!
+
+>> 3.2.5
+***Uses a primitive method of putting power-ups into the game
+at random intervals. The stats also displays information of
+powerups. Powerups are pretty buggy.
+****Added new 'Finds Powerups' AI.
+
+3.3.0
+**All powerups now have sound.
+**Made interface of stats window more readable:
+	- Hitpoints now in BOLD
+	- HP will go red if not much life remaining
+	- Powerup bonuses will go bold even it is negative
+
+***All powerups will now give an advantage to the player who
+gets it. (e.g before, if a 'extra time' was picked up, it 
+would increase the time of both damage and armour regardless
+of whether the bonus is negative or positive)
+Now, if (for example) an extra time is picked up and the damage
+bonus is negative, the extra time would *subtract* the time
+from the damage bonus.
+
+
+
+
+
+
+
+3.3.9
+
+***Revamped the interface. The stats are now displayed at the bottom,
+and has also been made a lot easier to read than before.
+
+3.3.10
+
+*Got rid of "still" to indicate a face is standing still and used
+and empty string instead. 
+**Did a bit more to the stats display.
+
+>> 3.3.12
+
+--GAMEPLAY/AI--
+**The program's method of picking which powerup to create is (hopefully)
+a lot more elegant. This should make the game run more smoothly
+**Added new exploding shots feature for area-of-effect damage!
+**'Elegantised' (optimised) the code some more
+**A 1 second pause after unpausing has been implemented, so players
+can get ready. Note that no keydown events (except unpause, of course. *duh*)
+run during this time, so holding down a key before the timer starts is pointless
+**The hurt powerups dont require a shot to be generated to make the explosion.
+***Added new power-up type. The 'flower' shoots a specified shot type at every
+45 degree angle. The low effect is the shot type, the high effect is time between 
+shots, and the min-max time is the number of shots. This can easily overload the
+program if maxshots is set too low: if lots of flowers are shooting at the same
+time, some shots might not come out because the 'shooting' array is full.
+
+--GRAPHICS--
+**Made a snazzier winning sequence with just labels. Got rid of the msgbox.
+Looks and sounds really cool! *Much* better than the 'beep!' of a msgbox :-)
+
+--INTERFACE--
+**Improved stats display:
+	-Added a progress bar to represent hitpoints. Features my own 'SomBar'
+	to replace the crappy VB progress bar.
+	-Image of the current shot appears beside the shot's name
+*Stats window now has its own timer for re-positioning itself, so now
+it will move even if the game is paused
+*Pause is just the 'P' key now
+*Seperated the menu into 'Menu' and 'Game'
+
+--AI--
+**AI will no longer use slowshot if its charging at opponent and opponent is
+facing it
+
+=====
+>> 3.4.0
+=====
+
+--GAMEPLAY--
+****Fixed some major problems with the positions of the faces and how they were drawn. 
+The game used to be a bit weird at times because shots were off-center, power-ups
+didn't seem to be centered properly, and everything was generally a displaced few 
+pixels from where they were supposed to be. I found out that is was simply sloppy
+programming on my part (shame, shame), because the positions of the faces were
+measured from the *top-left hand corner* of the face, and I sort of forgot that 
+and thought it was from the center through the rest of the program. (Once again:
+shame, shame on me...)
+***Found (and fixed) a major bug with the flower not shooting if the player gets it while
+holding the shoot button.
+**Added a new 'shotspeed' property to shots that, if >=0, will override the
+shots speed stored in the settings file. This is used for the flower powerups.
+The speed of the flower is controlled by the 2nd digit of the 'effectyou' setting
+**Finally switched players 1 and 2 around, so that player 1 is the person using the 
+left-hand side of the keyboard.
+**Flowers have a new feature where the flower can follow the player around,
+controlled by the 'effectsyou' setting. They can also be made to appear at random
+positions on the screen.
+*Program now updates the max powerups in reset rather than readsettings.
+**This version now uses 'data34.pos'. The settings are now stored in a more 
+efficient way, but this makes it incompatible with old setting files.
+***Added new shot feature: expiry times. When the expiry time of a shot is
+reached, i explodes and deals explosive damage to the opponent! First expiring
+shot is the Pipebomb, a short-range weapon with a massive explosion radius.
+I also added a mine that doesn't move.
+
+--GRAPHICS/SOUND--
+****See the first gameplay issue above.
+****All masks are now CREATED AT RUNTIME!!! This slows down the loading process
+considerably, but the trade-off is that half the bitmaps are no longer needed.
+**Powerup collisions are detected *before* the faces are drawn, so the cover-up thing
+wont cover the face as well.
+***Fixed a bug where 'ghost faces' would appear if the game is reset before someone dies.
+This didn't affect gameplay, but it did look a bit weird having 2 faces on the screen which 
+didn't do anything. 
+*A new picture for 'White Shot' (with a space) has now been drawn, made possible
+by the run-time mask creation.
+**The sound file used for powerups can now be modified.
+***Made priorities for each type of sound, so important
+sounds don't get overwritten, and important sounds will
+play even when all buffers are full:
+
+   Shot collision with wall - 0
+   Shot collision with player - 1
+   Respawn/Teleport - 2
+   Create Powerup - 3
+   Get Powerup - 3
+   Ending sequence sounds - 15
+
+--INTERFACE--
+**Added a loading screen with a SomBar that shows when the masks are being created.
+*Updated how the Sbar works. Its max is now set to the starthp (rather than 100), 
+so the value is simply the current hp of the player.
+*Added a warning message in the options window, and finally aligned the shot options
+and power-up options buttons.
+*The name of the player will change to 'Som-AI' if the AI is selected. It will
+change back to whatever it was before if 'Human' is selected again.
+**Players cannot create a new game or quit the program during the ending sequence now.
+(I only did it for 'new round' in the last version.)
+*Got rid of the keys that make the player keep moving up/down, since they were
+too confusing
+
+--AI--
+***Human player can now choose which aspects of the AI will be active in the
+'enter your name' windows. This makes the AI much more flexible.
+**Explosive shots no longer damage the owner. The AI used to keep killing
+itself, so I had to do this.
+**Fixed an oversight in implementing the 'flexible' AI. There is now a checkbox
+for the AI to use the 'choosewep' function, and the appropriate code to go with
+it (*duh*).
+**Made the AI plant mines (see gameplay) randomly if it has nothing else better to do.
+
+=====
+3.4.1
+=====
+
+--GAMEPLAY--
+***Added a new 'sniper shot' that is weak, but moves really fast.
+***Added new 'flame' shot, which the updated AI can also use properly. It is a short 
+range weapon with a very short expiry time. It deals a bit more damage than a 
+redshot, but fires faster.
+**Increased the range of pipebombs, but made the 'ring of destruction' power-up move 
+at normal speed.
+
+--GRAPHICS/SOUND--
+**Drew new bitmaps for the new weapons.
+**Got a sound from Red Alert for the flamethrower
+***The volume of the .wavs are now more balanced. Their size has also been decreased
+by using 8-bit sound instead of 16.
+
+
+--INTERFACE/USER FRIENLINESS--
+**The main window doesn't appear until the loading form disappears. This prevents
+the user from selecting the main form and unpausing the game before everything was
+loaded (why can that be done when the form isn't enabled???)
+***Added a little 'winner kills loser with *weapon*' thing at the top left when 
+someone wins. Works for draws as well. Not really that important, but it looks cool.
+*Changed the sombar on the loading form to blue (looks a bit better)
+****Implemented error catching for invalid settings, such as text for a numeric field.
+The game will freeze instead of simply killing itself, allowing the user to change
+the settings in with the Options dialog box.
+***If a sound file doesn't exist, PlaySound simply wont play it rather than crashing
+the program.
+
+--AI--
+***Made the choosewep AI compatible with exploding shots. This was a *lot* harder
+than I expected, but now it uses pipebombs really well. As a result of this AI
+improvement, I added the flamethrower, which the AI can now use properly (it wont
+try to use it as a long range weapon, even though it has a speed of 3).
+***Greatly simplified the choosewep AI. It used to pick the shot that would
+take the least number of changes to get to, but I figured that it simply 
+wasn't worth the processing power. It will still look for the best shot, but
+it will look in a random direction.
+***Made the AI's method of finding powerups more random, and hence less predictable.
+
+--MISC--
+**The program will no longer use 'movediag' from the settings file. It will simply
+work out what the diagonal movement will be with 'movestraight' and the pythagorus 
+theorm.
+
+
+==========================================
+3.4.2 (Compiled at 21:48 hours on 18/2/02)
+==========================================
+
+--GAMEPLAY--
+**Gameplay might be a *bit* smoother due to code optimisations. (See MISC)
+**WhiteShot now deals 13-26 damage (from 13-22), giving it a damage/time ratio of 1.625.
+**SlowShot now has a wait time of 11 instead of 9, giving it a damage/time ratio of 2.45
+
+--GRAPHICS/SOUND--
+***The 'cover up' bitmap is no longer used. Instead, the program will create the 
+'cover up' picture at runtime based on the background colour of the play window.
+(See INTERFACE for more details)
+
+
+--INTERFACE--
+***The user can now change the background colour of the game. Instead of the same
+pitch black background all the time, you can now battle it out in red, cyan, 
+floresent yellow...whatever you want! Note, however, that only the background colour
+changes: if you chose a bad colour, you might not be able to see the 'faces' because 
+they blend in, or you might get a headache from overly contrasting colours (on second
+thoughts, you really shouldn't use florescent yellow...).
+This setting is saved in the registry, rather than a file. 
+*At the 'enter your name' dialogs, you will now hear a sound as you type in your name.
+Purely for decorative purposes. (The sound is type.wav)
+
+
+--AI--
+**Slight change to the Findpowerups state. The randomness of decisions of what powerups to
+go for has been narrowed.
+
+--MISC--
+Code Optimisations:
+**The displays for the damage and armour mods no longer get called with every timer event.
+The displays are now updated once when the player picks up a powerup.
+**The HP displays are no longer updated every timer event. Instead, a ShowHP sub is called
+at 'ouch' and when a 'heal' powerup is picked.
+
+
+=========================================
+3.4.3 (Compiled at 15:28 hours on 8/3/02)
+=========================================
+
+--GAMEPLAY--
+Nil
+
+--GRAHPHICS/SOUND--
+**The 'faces' will be shown after the background colour has been changed, but not the shots.
+****Added a very cool-looking feature where shots can leave trails behind them. 
+**Made the cover-up picture smaller, and made the covering-up of 'faces' more
+accurate (it was a bit screwed up before).
+*Made the picture of 'White Shot' a bit bigger. This will affect all versions that use
+White Shot.bmp (v3.4.0 +)
+
+--INTERFACE--
+Nil
+
+--AI--
+****Greatly improved the ChooseWep AI by making it chose shots that will still do damage after 
+damage mods and armour are taken into account. e.g it will no longer use RedShot if opponent 
+has more than 3 armour. 
+
+
+--MISC--
+**Fixed a bug where the display for the damage and armour mods would not update when
+out of time. I simply forgot to make it update the caption property along with the
+font size and bold properties.
+**Updating time left on mods is now done in separate procedure. 
+**Drawing the 'faces' is on a separate procedure.
+**Due to above fixes, Reset no longer runs the timer through once. It simply runs the
+procedures for updating the stats display.
+**Fixed a powerup bug where there would be an overflow error if user changed the chance
+of a powerup being selected without restarting the round. The bug was due to the improved
+powerup selection process.
+
+
+===================================
+>> 3.5.0 (Compiled at 16:26 on 9/3/02)
+===================================
+
+--GAMEPLAY--
+***New shots added: Machine gun and Lightning.
+***Gameplay has been revamped! Players no longer have access to all shots. Instead, players
+chose which shots they use at the beginning of each round. 
+
+--GRAHPHICS/SOUND--
+***New pictures for Machine gun and Lightning. 
+*The label that displays "WINS" has been widened, in case the user does not have the 
+Matisse font.
+
+--INTERFACE/USER FRIENDLINESS--
+****FINALLY implemented customisable keys. Keys can be customised in a dialog box,
+although it only shows them in keycode (how do you display non-character keys like
+[Shift] and [Enter]?). The dialog box is designed so that the user cannot assign the
+same key to multiple actions, although if they decide to screw around with the registry
+settings, it's not my problem.
+
+--AI--
+**AI has been adjusted to use the customisable keys rather than fixed keys.
+***AI is fully compatible with the new gameplay. It will only pick shots at random at the
+beginning, but it will not pick duplicate shots. 
+
+--MISC--
+**New settings file used: data35.pos. This contains the two new shots.
+**As a direct result of customisable keys, the procedures involving pressing keys
+uses much more elegant code.
+
+=====
+3.5.1
+=====
+
+--GAMEPLAY--
+****The user can now change the size of the game window. The AI isn't very
+good in large games, simply because it can't dodge shots yet. Still, it is
+an interesting new feature
+**Player can no longer stop moving. If the player releases the move forward/
+backward keys, the 'face' will still keep on moving. This speeds up the pace
+of the game (as well as 'evening out' the playing field - the AI never stops 
+moving, so why should the humans :-)?). You can still stop by backing up
+against a wall. 
+
+--GRAHPHICS/SOUND--
+**Got a sound for the machine gun. Used the sound of the ump45-1 sub-machine gun
+from Counter-Strike.
+
+--INTERFACE/USER FRIENDLINESS--
+**Instead of chosing completely random weapons for each weapon slot, the
+AI's method of chosing shots to use will now run even for human players.
+This selects random shots, without duplicates, for the player, so s/he can
+just press fire without having to check for duplicates.
+**The choose shots dialog now shows the names of the players rather than just
+Player 1 and Player 2.
+**Wrote my own function that translates non-character keycode into identifiable
+names. 
+
+--AI--
+**Fixed an oversight in my code that meant that the AI would still chose
+duplicate shots sometimes.
+**AI will only chose shots that can deal more than 2 thirds of their damage after
+armour and damage mods are taken into account. (I really should be using fuzzy logic
+for this...)
+
+--MISC--
+**Added some more comments to the source code for the new v3.5 features.
+
+
+========================================
+>> v4.0.0 (Compiled at 21:50 on 22/3/01)
+========================================
+
+--GAMEPLAY--
+****A partly functional NETWORK PLAY feature is now working. This allows two users to play over
+any network, given that they know the IP address/computer name of the other computer. It runs a
+bit slow right now, because its sending a *lot* of data, so I wouldn't recommend playing over 
+the internet unless you have cable. Also, there isn't any sound for the client yet: the server
+does everything, and the client pretty much just draws the pictures where it is told. Its
+rather buggy too, but it runs fine most of the time.
+
+***Powerups now work differently. Instead of the mods being fixed until the time runs out
+or it is changed, they will now slowly fade away as the time decreases.
+**Changed my mind: the 'faces' don't have to keep on moving anymore.
+***The movement is now more accurate. The X and Y values of shots and faces is now stored
+with floating-point numbers instead of integers.
+***As a result, shots can now move in fractions of units (how they are moved has been changed 
+to do this). This also prepares the way for character selections which will feature different 
+classes that can move at varying speeds, amongst other things.
+
+--GRAHPHICS/SOUND--
+***Fixed a very strange bug that happened because Windows couldn't agree with itself
+over what was coloured white. Because white is used to represent transparency in the bitmaps,
+the masks were not created correctly, and the program ended up drawing the whole picture,
+even the 'transparent' background. The program now checks for colours *close* to white.
+This seems to be a graphics-card related problem, as it happened after I replaced my 
+old card with a TNT2 M64.
+
+--INTERFACE/USER FRIENDLINESS--
+*Interface clarification: in the define keys dialog, it says 'Turn Left' and 'Turn Right'
+instead of just 'Left' and 'Right'.
+
+--AI--
+Nil. I focused almost entirely on network play in this version.
+
+--MISC--
+**Took out a huge bunch of old commented-out code. The old code isn't gone though: many of
+the previous versions have been archived.
+**Made the .What property of currently active shots and powerups become index of the shot in the 
+settings rather than the name of the shot. This simplifies the code quite a bit, because it used to
+have to find out the index of a shot given its name, resulting in redundant processing.
+
+
+=========
+>> v4.1.0
+=========
+
+--GAMEPLAY--
+****Class selections have been implemented! Variables between classes include weapon selection,
+number of weapon slots, hitpoints, damage and armour mods, size and speed of shots, and movement
+rate of the player. Classes: Soldier, Demo-man, Assasin, Sniper, Elemental, and Artillery. 
+***New weapon feature added: shots can now affect the opponent's armour or damage.
+***New weapons added: Acid (eats armour), Gauss Rifle (powerful sniper gun), Bombard (artillery weapon), Stingers (missles), Neutron Gun (super-rapid fire), Plasma Gun. Yellowshot now affects opponent's damage mod. Whiteshot now accelerates like a real rocket (see below).
+***New weapon feature: accelerating shots. Shots now have an acceleration property. Each unit of time, their speed will increase by the amount of acceleration. This allows rocket-type weapons.
+***New weapon feature: analogue angles. Shots can now move at *any* angle, not just 45º increments. Put simply, it means that if you stand in one spot and shoot, the shots wont neccessarily move in a single line. This was made possible by using trigonometry. This allows cool effects such the flamethower 'spraying' flames.
+**HP now slowly fades to 100% if its gone over 100%. Makes the starting class HP's more important
+
+--GRAPHICS/SOUND--
+***The spirtes used in the game can now be customised! There is a simple dialog box where the user can enter where the program will look for the pictures. This allows different graphics without having to replace the existing files.
+**The sound that is made when a shot hits the wall can be customised. Sniper shot and Machine gun now have a ricochet sound.
+**I finally got myself a good icon editor and made a transparent cursor. The mouse will no longer be visible while playing.
+**API is now used to make the masks at the start. This is a lot faster than using pure VB, so the game loads in a lot less time.
+
+--INTERFACE/USER FRIENDLYNESS--
+***The stats window has been given a user-friendly makeover. The damage and armour mods are now labelled,
+and the shot-damage display is now labelled with 'Normal' and 'Explosive' damage. It does look slightly
+crowded now, but at least it's easier to understand. The HP display has been enlarged by 1 size.
+**Made my own command button. The windows style buttons just didn't look good in the game. 
+**When choosing weapons at the start of the round, the shot will be displayed at in the stats window. This
+allows user to 'browse' through the shots.
+**The time remaining on armour/damage power-ups has now been removed from the stats display. It is no
+longer as important now, because of the new way that the power-ups work.
+**Added a frame-rate counter at bottom of screen. The intended speed is 19fps, so user can adjust the 'gamespeed' setting accordingly.
+**Shots can have different sounds when they collide with a wall.
+
+--AI--
+***The AI's method of chosing shots has been improved. Instead of checking within fixed boundaries, it will now simply give a floating-point score for the shot using a formula. A score is given to each shot based on normal and explosive damage, speed of shot and distance to opponent (or where it will explode if it's an expiring shot), and its armour/damage mod effects. The exact numbers for the formulas are still being perfected.
+***The 'AIShoot' procedure has been improved. It still behaves the same, but it does so much more efficiently. It will now take into account spraying shots.
+**The AI will take into account class variations, such as movement speed when going for power-ups.
+
+--MULTIPLAYER--
+***GetKeyState is now used to read keyboard inputs. This means up to six keys can be pressed at once, which is almost double the old amount. 
+**Network play has been disabled for this version. I need to clean it up more first.
+**Fixed an oversight where the positions of the players would be sent even though the game
+was not running as a server. This was causing the game to run slowly, especially when playing
+with the AI
+
+--MISC--
+****The game now runs a LOT more smoothly than before, and all I did was get rid of the timer. Positions now uses a loop with a frame-rate limiter instead of the timer. Now there is no noticable drop in frame rates even with two AI's on screen at the same time. Play it before and after this change on a slowish computer (like my celeron 600) and you'll see the difference!
+
+--KNOWN PROBLEMS--
+- Occasionally, Positions gets hit by the 'Redshot bug'. This is when all of the player's weapon slots get filled up with Redshots, and nothing else. I haven't figured out why it happens yet. There is also another one where the last weapon slot is assigned to redshot even though the class does not allow it.
+- The Ready...GO! thing behaves strangely at times. e.g when you resize the game window, the pause label doesn't appear.
+- Sometimes, the program can't seem to handle the player selecting classes too quickly, i.e when user holds down button.
+
+
+========
+To Do...
+========
+~Make customisable sounds without having to replace existing sounds.
+~Make network play compatible with class selections
+~Do a big makeover to make the program look pretty. *IN PROCESS*
+~Make network play compatible with Getkeystate
+~Lower the Lightning's ROF
+~AI ideas:
+	Shot dodging. Figure out a way to do this!
+	IF no shots good for distance, THEN move closer.
